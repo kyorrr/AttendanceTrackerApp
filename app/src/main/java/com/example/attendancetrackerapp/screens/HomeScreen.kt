@@ -1,4 +1,4 @@
-package com.example.attendancetrackerapp
+package com.example.attendancetrackerapp.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

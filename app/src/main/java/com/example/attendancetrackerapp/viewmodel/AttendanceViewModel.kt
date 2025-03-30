@@ -5,16 +5,22 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.attendancetrackerapp.data.Attendance
 import com.example.attendancetrackerapp.data.AttendanceDatabase
-import kotlinx.coroutines.flow.Flow
+import com.example.attendancetrackerapp.data.Employee
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class AttendanceViewModel(application: Application) : AndroidViewModel(application) {
     private val database = AttendanceDatabase.getInstance(application)
-    private val dao = database.attendanceDao()
+    private val employeeDao = database.employeeDao()
 
-    val allAttendances: Flow<List<Attendance>> = dao.getAll()
+    val employees = employeeDao.getAll().stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5_000),
+        emptyList()
+    )
 
-    fun insert(attendance: Attendance) = viewModelScope.launch {
-        dao.insert(attendance)
+    fun insertAttendance(attendance: Attendance) = viewModelScope.launch {
+        database.attendanceDao().insert(attendance)
     }
 }
