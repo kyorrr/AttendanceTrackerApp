@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "710eb6e7d4a2d780818a5591506e955b",
+    "identityHash": "5cb2cbb145ca7005610828276093ce9c",
     "entities": [
       {
         "tableName": "attendance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `employee_id` INTEGER NOT NULL, `employee_name` TEXT NOT NULL, `entry_time` INTEGER NOT NULL, `exit_time` INTEGER, `date` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `employee_id` INTEGER NOT NULL, `entry_time` INTEGER NOT NULL, `exit_time` INTEGER, `date` INTEGER NOT NULL, FOREIGN KEY(`employee_id`) REFERENCES `employees`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -18,12 +18,6 @@
             "fieldPath": "employeeId",
             "columnName": "employee_id",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "employeeName",
-            "columnName": "employee_name",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -52,7 +46,19 @@
           ]
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "employees",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "employee_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "employees",
@@ -90,7 +96,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '710eb6e7d4a2d780818a5591506e955b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5cb2cbb145ca7005610828276093ce9c')"
     ]
   }
 }

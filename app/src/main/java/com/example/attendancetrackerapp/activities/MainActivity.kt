@@ -7,32 +7,40 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.attendancetrackerapp.screens.AddAttendanceScreen
+import com.example.attendancetrackerapp.screens.EmployeeManagementScreen
 import com.example.attendancetrackerapp.screens.HomeScreen
+import com.example.attendancetrackerapp.screens.SettingsScreen
 import com.example.attendancetrackerapp.screens.StatsScreen
 import com.example.attendancetrackerapp.ui.theme.AttendanceTheme
 import com.example.attendancetrackerapp.viewmodel.AttendanceViewModel
 
 class MainActivity : ComponentActivity() {
-    @SuppressLint("CoroutineCreationDuringComposition")
+    @SuppressLint("CoroutineCreationDuringComposition", "StateFlowValueCalledInComposition")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AttendanceTheme {
+            val viewModel = AttendanceViewModel(application)
+            val darkTheme by viewModel.darkTheme.collectAsState()
+
+            AttendanceTheme(darkTheme = darkTheme) {
                 Surface {
                     val navController = rememberNavController()
-                    val viewModel = AttendanceViewModel(application)
                     NavHost(
                         navController = navController,
                         startDestination = "home"
                     ) {
-                        composable("home") { HomeScreen(navController) }
+                        composable("home") { HomeScreen(navController, viewModel) }
                         composable("add") { AddAttendanceScreen(navController, viewModel) }
-                        composable("stats") { StatsScreen() }
+                        composable("stats") { StatsScreen(navController, viewModel) }
+                        composable("settings") { SettingsScreen(navController, viewModel) }
+                        composable("manage-employees") { EmployeeManagementScreen(navController, viewModel) }
                     }
                 }
             }

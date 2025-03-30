@@ -2,7 +2,17 @@ package com.example.attendancetrackerapp.data
 
 import androidx.room.*
 
-@Entity(tableName = "attendance")
+@Entity(
+    tableName = "attendance",
+    foreignKeys = [
+        ForeignKey(
+            entity = Employee::class,
+            parentColumns = ["id"],
+            childColumns = ["employee_id"],
+            onDelete = ForeignKey.CASCADE
+        )
+    ]
+)
 data class Attendance(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "employee_id") val employeeId: Int,

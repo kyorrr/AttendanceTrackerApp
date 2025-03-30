@@ -3,7 +3,7 @@ package com.example.attendancetrackerapp.data
 import android.content.Context
 import androidx.room.*
 
-@Database(entities = [Attendance::class, Employee::class], version = 1)
+@Database(entities = [Attendance::class, Employee::class], version = 2)
 abstract class AttendanceDatabase : RoomDatabase() {
     abstract fun attendanceDao(): AttendanceDao
     abstract fun employeeDao(): EmployeeDao

@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "9c3a5375d68791b03d1d128d30deff58",
+    "identityHash": "5cb2cbb145ca7005610828276093ce9c",
     "entities": [
       {
         "tableName": "attendance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `employee_id` INTEGER NOT NULL, `entry_time` INTEGER NOT NULL, `exit_time` INTEGER, `date` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `employee_id` INTEGER NOT NULL, `entry_time` INTEGER NOT NULL, `exit_time` INTEGER, `date` INTEGER NOT NULL, FOREIGN KEY(`employee_id`) REFERENCES `employees`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -46,7 +46,19 @@
           ]
         },
         "indices": [],
-        "foreignKeys": []
+        "foreignKeys": [
+          {
+            "table": "employees",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "employee_id"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
       },
       {
         "tableName": "employees",
@@ -84,7 +96,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '9c3a5375d68791b03d1d128d30deff58')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '5cb2cbb145ca7005610828276093ce9c')"
     ]
   }
 }
