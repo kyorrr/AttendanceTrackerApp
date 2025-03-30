@@ -9,5 +9,5 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun StatsScreen() {
     Text(text = "Статистика", modifier = Modifier.padding(16.dp))
-    // Здесь добавьте логику для отображения статистики
+
 }

@@ -13,10 +13,4 @@ interface AttendanceDao {
 
     @Query("SELECT * FROM attendance WHERE employee_name = :name")
     fun getAttendanceForEmployee(name: String): Flow<List<Attendance>>
-
-    @Update
-    suspend fun update(attendance: Attendance)
-
-    @Delete
-    suspend fun delete(attendance: Attendance)
 }

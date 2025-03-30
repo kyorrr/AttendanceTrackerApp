@@ -17,13 +17,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.attendancetrackerapp.data.Attendance
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 
@@ -35,7 +30,6 @@ fun AddAttendanceScreen(navController: NavHostController) {
     var exitTime by remember { mutableStateOf<Date?>(null) }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        // Ввод сотрудника
         OutlinedTextField(
             value = employee,
             onValueChange = { employee = it },
@@ -53,7 +47,7 @@ fun AddAttendanceScreen(navController: NavHostController) {
             )
         }
 
-        // Время выхода
+        //Время выхода
         TextButton(
             onClick = { exitTime = Date() },
             enabled = exitTime == null
@@ -71,9 +65,9 @@ fun AddAttendanceScreen(navController: NavHostController) {
                     employeeName = employee,
                     entryTime = entryTime.time,
                     exitTime = exitTime?.time,
-                    date = Date().time // Текущая дата
+                    date = Date().time
                 )
-                // Сохраните attendance через ViewModel
+                // Сохранить работника через ViewModel
                 navController.popBackStack()
             },
             enabled = employee.isNotBlank()

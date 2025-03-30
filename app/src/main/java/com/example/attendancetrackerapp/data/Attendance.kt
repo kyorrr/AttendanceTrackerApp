@@ -9,10 +9,4 @@ data class Attendance(
     @ColumnInfo(name = "entry_time") val entryTime: Long,
     @ColumnInfo(name = "exit_time") val exitTime: Long?,
     @ColumnInfo(name = "date") val date: Long
-) {
-    init {
-        require(entryTime <= (exitTime ?: Long.MAX_VALUE)) {
-            "Время выхода не может быть раньше времени входа"
-        }
-    }
-}
+)
