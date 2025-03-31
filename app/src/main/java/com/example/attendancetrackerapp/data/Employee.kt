@@ -6,5 +6,8 @@ import androidx.room.*
 data class Employee(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "position") val position: String
+    @ColumnInfo(name = "position") val position: String,
+    @ColumnInfo(name = "login") val login: String,
+    @ColumnInfo(name = "password") val password: String,
+    @ColumnInfo(name = "role") val role: String
 )

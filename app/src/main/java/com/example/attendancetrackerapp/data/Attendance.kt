@@ -11,8 +11,10 @@ import androidx.room.*
             childColumns = ["employee_id"],
             onDelete = ForeignKey.CASCADE
         )
-    ]
+    ],
+    indices = [Index("employee_id")]
 )
+
 data class Attendance(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "employee_id") val employeeId: Int,

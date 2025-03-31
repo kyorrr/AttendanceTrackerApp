@@ -19,8 +19,18 @@ class AttendanceViewModel(application: Application) : AndroidViewModel(applicati
     private val attendanceDao = database.attendanceDao()
     private val employeeDao = database.employeeDao()
 
+    private val _currentUser = MutableStateFlow<Employee?>(null)
+    val currentUser = _currentUser.asStateFlow()
+
     private val _darkTheme = MutableStateFlow(false)
     val darkTheme = _darkTheme.asStateFlow()
+
+    init {
+        viewModelScope.launch {
+            val savedUser = getSavedUser()
+            _currentUser.value = savedUser
+        }
+    }
 
     init {
         val savedTheme = getApplication<Application>().getSharedPreferences("prefs", 0)
@@ -51,5 +61,33 @@ class AttendanceViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteEmployee(employee: Employee) = viewModelScope.launch {
         employeeDao.delete(employee)
+    }
+
+    suspend fun authenticate(login: String, password: String): Employee? {
+        return employeeDao.findEmployee(login, password)
+    }
+
+    fun setCurrentUser(employee: Employee?) {
+        _currentUser.value = employee
+        saveUser(employee)
+    }
+
+    fun isUserAdmin(): Boolean {
+        return _currentUser.value?.role == "admin"
+    }
+
+    private fun saveUser(employee: Employee?) {
+        val prefs = getApplication<Application>().getSharedPreferences("user_prefs", 0).edit()
+        if (employee == null) {
+            prefs.remove("current_user_id").apply()
+        } else {
+            prefs.putString("current_user_id", employee.id.toString()).apply()
+        }
+    }
+
+    private suspend fun getSavedUser(): Employee? {
+        val prefs = getApplication<Application>().getSharedPreferences("user_prefs", 0)
+        val savedUserId = prefs.getString("current_user_id", null) ?: return null
+        return employeeDao.findById(savedUserId.toInt())
     }
 }
